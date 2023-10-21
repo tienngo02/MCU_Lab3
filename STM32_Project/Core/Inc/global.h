@@ -17,6 +17,11 @@
 #define AUTO_GREEN        3
 #define AUTO_GREEN_YELLOW 4
 #define AUTO_YELLOW       5
+
+#define MAN_RED           12
+#define MAN_GREEN         13
+#define MAN_YELLOW        14
+
 #define MAX_LED           4
 
 extern int status;

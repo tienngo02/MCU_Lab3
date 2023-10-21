@@ -10,6 +10,10 @@ int sec1 = 0;
 int sec2 = 0;
 int index_led = 0;
 
+void updateLEDtime(){
+
+}
+
 void fsm_automatic_run(){
 	switch(status){
 	case INIT:
@@ -28,6 +32,7 @@ void fsm_automatic_run(){
 		setTimer(250, 3);
 		sec1 = red;
 		sec2 = green;
+		updateClockBuffer(sec1, sec2);
 		break;
 	case AUTO_RED:
 		HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, SET);
@@ -42,6 +47,10 @@ void fsm_automatic_run(){
 			status = AUTO_GREEN_YELLOW;
 			sec2 = yellow;
 			setTimer(yellow*1000, 1);
+		}
+		if(isButton1Pressed(0) == 1){
+			status = MAN_RED;
+			setTimer(250, 4);
 		}
 		break;
 	case AUTO_GREEN_YELLOW:
@@ -95,11 +104,13 @@ void fsm_automatic_run(){
 	default:
 		break;
 	}
-	if(timer_flag[2] == 1){
-		updateClockBuffer(sec1, sec2);
-		if(sec1 > 0) sec1--;
-		if(sec2 > 0) sec2--;
-		setTimer(1000, 2);
+	if((status >= INIT) && (status <=AUTO_YELLOW)){
+		if(timer_flag[2] == 1){
+			updateClockBuffer(sec1, sec2);
+			if(sec1 > 0) sec1--;
+			if(sec2 > 0) sec2--;
+			setTimer(1000, 2);
+		}
 	}
 	if(timer_flag[3] == 1){
 		update7SEG(index_led);
