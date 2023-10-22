@@ -12,17 +12,17 @@
 #include "button.h"
 #include "main.h"
 
-#define INIT              1
-#define AUTO_RED          2
-#define AUTO_GREEN        3
-#define AUTO_GREEN_YELLOW 4
-#define AUTO_YELLOW       5
+#define INIT          1
+#define RED1_GREEN2   2
+#define RED1_YELLOW2  3
+#define GREEN1_RED2   4
+#define YELLOW1_RED2  5
 
-#define MAN_RED           12
-#define MAN_GREEN         13
-#define MAN_YELLOW        14
+#define MAN_RED       12
+#define MAN_GREEN     13
+#define MAN_YELLOW    14
 
-#define MAX_LED           4
+#define MAX_LED       4
 
 extern int status;
 extern int index_led;
