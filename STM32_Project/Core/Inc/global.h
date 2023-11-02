@@ -22,6 +22,10 @@
 #define MAN_GREEN     13
 #define MAN_YELLOW    14
 
+#define RED           1
+#define GREEN         2
+#define YELLOW        3
+
 #define MAX_LED       4
 
 extern int status;
@@ -30,6 +34,12 @@ extern int red;
 extern int green;
 extern int yellow;
 
+void clearAllLED();
+void turnonTrafficLight1(int led);
+void turnonTrafficLight2(int led);
+void toggleLedRED();
+void toggleLedGREEN();
+void toggleLedYELLOW();
 void display7SEG(int num);
 void update7SEG(int index);
 void updateClockBuffer(int sec1, int sec2);

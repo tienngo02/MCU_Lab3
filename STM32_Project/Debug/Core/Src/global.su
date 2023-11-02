@@ -1,3 +1,9 @@
 global.c:14:6:display7SEG	16	static
 global.c:40:6:update7SEG	16	static
 global.c:79:6:updateClockBuffer	16	static
+global.c:86:6:clearAllLED	8	static
+global.c:96:6:turnonTrafficLight1	16	static
+global.c:117:6:turnonTrafficLight2	16	static
+global.c:138:6:toggleLedRED	8	static
+global.c:143:6:toggleLedYELLOW	8	static
+global.c:148:6:toggleLedGREEN	8	static

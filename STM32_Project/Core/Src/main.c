@@ -98,6 +98,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   status = INIT;
+  setTimer(250, 1);
   while (1)
   {
 //	  if(HAL_GPIO_ReadPin(BUTTON_1_GPIO_Port, BUTTON_1_Pin) == GPIO_PIN_RESET){
@@ -116,6 +117,12 @@ int main(void)
 
 	  fsm_automatic_run();
 	  fsm_manual_run();
+	  if(timer_flag[1] == 1){
+	  		setTimer(250, 1);
+	  		update7SEG(index_led);
+	  		index_led++;
+	  		if(index_led >= MAX_LED) index_led = 0;
+	  }
 
     /* USER CODE END WHILE */
 

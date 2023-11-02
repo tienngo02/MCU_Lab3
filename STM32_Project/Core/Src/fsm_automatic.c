@@ -14,46 +14,46 @@ int index_led = 0;
 void fsm_automatic_run(){
 	switch(status){
 	case INIT:
-		HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, SET);
-		HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, SET);
-		HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, SET);
-
-		HAL_GPIO_WritePin(LED_GREEN2_GPIO_Port, LED_GREEN2_Pin, SET);
-		HAL_GPIO_WritePin(LED_RED2_GPIO_Port, LED_RED2_Pin, SET);
-		HAL_GPIO_WritePin(LED_YELLOW2_GPIO_Port, LED_YELLOW2_Pin, SET);
+		clearAllLED();
 
 		status = RED1_GREEN2;
 		setTimer(1000, 0);
-		setTimer(250, 1);
+
 		sec1 = red;
 		sec2 = green;
+		updateClockBuffer(sec1, sec2);
 		break;
 	case RED1_GREEN2:
-		HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, SET);
-		HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, RESET);
-		HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, SET);
+		turnonTrafficLight1(RED);
+		turnonTrafficLight2(GREEN);
 
-		HAL_GPIO_WritePin(LED_GREEN2_GPIO_Port, LED_GREEN2_Pin, RESET);
-		HAL_GPIO_WritePin(LED_RED2_GPIO_Port, LED_RED2_Pin, SET);
-		HAL_GPIO_WritePin(LED_YELLOW2_GPIO_Port, LED_YELLOW2_Pin, SET);
+		if(timer_flag[0] == 1){
+			setTimer(1000, 0);
+			if(sec1 > 0) sec1--;
+			if(sec2 > 0) sec2--;
+		}
+		updateClockBuffer(sec1, sec2);
 
 		if(sec2 <= 0){
 			status = RED1_YELLOW2;
 			sec2 = yellow;
 		}
-		if(isButton1Pressed(0) == 1){
+		if(isButtonPressed(0) == 1){
 			status = MAN_RED;
 			setTimer(250, 2);
+			clearAllLED();
 		}
 		break;
 	case RED1_YELLOW2:
-		HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, SET);
-		HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, RESET);
-		HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, SET);
+		turnonTrafficLight1(RED);
+		turnonTrafficLight2(YELLOW);
 
-		HAL_GPIO_WritePin(LED_GREEN2_GPIO_Port, LED_GREEN2_Pin, SET);
-		HAL_GPIO_WritePin(LED_RED2_GPIO_Port, LED_RED2_Pin, SET);
-		HAL_GPIO_WritePin(LED_YELLOW2_GPIO_Port, LED_YELLOW2_Pin, RESET);
+		if(timer_flag[0] == 1){
+			setTimer(1000, 0);
+			if(sec1 > 0) sec1--;
+			if(sec2 > 0) sec2--;
+		}
+		updateClockBuffer(sec1, sec2);
 
 		if(sec2 <= 0){
 			status = GREEN1_RED2;
@@ -62,13 +62,15 @@ void fsm_automatic_run(){
 		}
 		break;
 	case GREEN1_RED2:
-		HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, RESET);
-		HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, SET);
-		HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, SET);
+		turnonTrafficLight1(GREEN);
+		turnonTrafficLight2(RED);
 
-		HAL_GPIO_WritePin(LED_GREEN2_GPIO_Port, LED_GREEN2_Pin, SET);
-		HAL_GPIO_WritePin(LED_RED2_GPIO_Port, LED_RED2_Pin, RESET);
-		HAL_GPIO_WritePin(LED_YELLOW2_GPIO_Port, LED_YELLOW2_Pin, SET);
+		if(timer_flag[0] == 1){
+			setTimer(1000, 0);
+			if(sec1 > 0) sec1--;
+			if(sec2 > 0) sec2--;
+		}
+		updateClockBuffer(sec1, sec2);
 
 		if(sec1 <= 0){
 			status = YELLOW1_RED2;
@@ -76,13 +78,15 @@ void fsm_automatic_run(){
 		}
 		break;
 	case YELLOW1_RED2:
-		HAL_GPIO_WritePin(LED_GREEN1_GPIO_Port, LED_GREEN1_Pin, SET);
-		HAL_GPIO_WritePin(LED_RED1_GPIO_Port, LED_RED1_Pin, SET);
-		HAL_GPIO_WritePin(LED_YELLOW1_GPIO_Port, LED_YELLOW1_Pin, RESET);
+		turnonTrafficLight1(YELLOW);
+		turnonTrafficLight2(RED);
 
-		HAL_GPIO_WritePin(LED_GREEN2_GPIO_Port, LED_GREEN2_Pin, SET);
-		HAL_GPIO_WritePin(LED_RED2_GPIO_Port, LED_RED2_Pin, RESET);
-		HAL_GPIO_WritePin(LED_YELLOW2_GPIO_Port, LED_YELLOW2_Pin, SET);
+		if(timer_flag[0] == 1){
+			setTimer(1000, 0);
+			if(sec1 > 0) sec1--;
+			if(sec2 > 0) sec2--;
+		}
+		updateClockBuffer(sec1, sec2);
 
 		if(sec1 <= 0){
 			status = RED1_GREEN2;
@@ -94,20 +98,5 @@ void fsm_automatic_run(){
 		break;
 	}
 
-	if((status >= INIT) && (status <=YELLOW1_RED2)){
-		updateClockBuffer(sec1, sec2);
-		if(timer_flag[0] == 1){
-			setTimer(1000, 0);
-			if(sec1 > 0) sec1--;
-			if(sec2 > 0) sec2--;
-		}
-	}
-
-	if(timer_flag[1] == 1){
-		setTimer(250, 1);
-		update7SEG(index_led);
-		index_led++;
-		if(index_led >= MAX_LED) index_led = 0;
-	}
 }
 

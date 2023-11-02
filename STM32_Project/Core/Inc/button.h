@@ -16,7 +16,7 @@
 
 extern int button1_flag;
 
-int isButton1Pressed(int index);
+int isButtonPressed(int index);
 void getKeyInput();
 
 #endif /* INC_BUTTON_H_ */
